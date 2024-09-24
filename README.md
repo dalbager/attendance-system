@@ -1,1 +1,1 @@
-# attendance-system
+# Attendance system

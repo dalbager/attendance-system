@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+{% block main %}
+<div class="text-white text-center bg-blue-600 p-2">
+    <a href="{% url 'calendar' %}">
+        <h1 class="text-lg font-semibold">{{ name }}</h1>
+    </a>
+</div>
+<div class="grid grid-cols-7 gap-4 p-4">
+  {% for day in month %}
+    <a href="{% url 'attendance' today.year today.month day %}">
+      <div class="
+        {% if day in attended_days %}
+          bg-blue-600 hover:bg-blue-700
+        {% else %}
+          bg-blue-400 hover:bg-blue-500
+        {% endif %}
+        text-white text-center rounded-md p-2">
+        <h1 class="font-semibold">{{ day|default_if_none:"00" | stringformat:"02d" }}.{{ today|date:"m.Y" }}</h1>
+      </div>
+    </a>
+  {% endfor %}
+</div>
+{% endblock main %}

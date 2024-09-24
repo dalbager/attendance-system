@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+
+{% block main %}
+<div class="text-white text-center bg-blue-600 p-2">
+    <a href="{% url 'calendar' %}">
+        <h1 class="text-lg font-semibold">{{ selected_date|date:"d.m.Y" }}</h1>
+    </a>
+</div>
+<form method="POST">
+    {% csrf_token %}
+    <ul class="flex flex-col gap-2 p-4">
+      {% for student_data in students_attendance %}
+        <li class="flex gap-4 justify-between border-b-2 border-blue-400 p-2 rounded-sm">
+            <a href="{% url 'student' student_data.student.id %}">
+                <h1 class="font-semibold">{{ student_data.student.name }}</h1>
+            </a>
+            <div class="flex gap-4">
+                <div class="flex items-center gap-x-2">
+                    <input id="present_{{ student_data.student.id }}" name="status_{{ student_data.student.id }}" type="radio" value="present"
+                           class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                           {% if student_data.present == True %} checked {% endif %}>
+                    <label for="present_{{ student_data.student.id }}" class="block text-sm font-medium leading-6 text-gray-900">Присутствует</label>
+                </div>
+                <div class="flex items-center gap-x-2">
+                    <input id="absent_{{ student_data.student.id }}" name="status_{{ student_data.student.id }}" type="radio" value="absent"
+                           class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                           {% if student_data.present == False %} checked {% endif %}>
+                    <label for="absent_{{ student_data.student.id }}" class="block text-sm font-medium leading-6 text-gray-900">Отсутствует</label>
+                </div>
+            </div>
+        </li>
+      {% endfor %}
+      <button type="submit" class="mt-4 p-2 bg-blue-500 text-white rounded-md">Сохранить</button>
+    </ul>
+</form>
+{% endblock main %}
